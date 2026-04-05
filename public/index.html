@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S/4HANA ISU Data Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="/style.css?v=2">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <h1>ISU Agent Console</h1>
+      <p>Intelligent test data orchestration</p>
+    </header>
+
+    <main>
+      <div class="chat-section">
+        <div id="messagesContainer" class="messages-container">
+          <div class="message system-message">
+            Ready to generate data. Try: "Create 1 residential business partner"
+          </div>
+        </div>
+
+        <form id="scenarioForm" class="input-form">
+          <input type="text" id="scenarioInput" placeholder="Describe the scenario..." required autocomplete="off" />
+          <button type="submit" id="submitBtn">Generate</button>
+        </form>
+      </div>
+
+      <div class="database-section">
+        <div class="section-header">
+          <h2>Generated Entities (HANA mapped)</h2>
+        </div>
+        <div class="entities-viewer" id="tablesContainer">
+          <p style="color: var(--text-muted); font-size: 0.85rem; padding: 10px;">Waiting for generated entities...</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/app.js?v=2"></script>
+</body>
+</html>
