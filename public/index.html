@@ -3,43 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>S/4HANA ISU Data Agent</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <title>ISU Data Agent</title>
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-  <link rel="stylesheet" href="/style.css?v=2">
+  <link rel="stylesheet" href="/style.css?v=3">
 </head>
 <body>
-  <div class="app-container">
-    <header>
-      <h1>ISU Agent Console</h1>
-      <p>Intelligent test data orchestration</p>
-    </header>
+  <div class="app">
 
-    <main>
-      <div class="chat-section">
-        <div id="messagesContainer" class="messages-container">
-          <div class="message system-message">
-            Ready to generate data. Try: "Create 1 residential business partner"
-          </div>
-        </div>
+    <!-- Welcome Screen -->
+    <div id="welcome" class="welcome">
+      <svg class="welcome-logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="4" width="40" height="40" rx="10" stroke="currentColor" stroke-width="2"/>
+        <path d="M14 16h20M14 24h14M14 32h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h1>How can I help you today?</h1>
+      <p>Generate realistic S/4HANA ISU test data with natural language.</p>
+      <div class="suggestions">
+        <button class="suggestion" data-text="Create 2 residential business partners with contract accounts and installations">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v3M8 12v3M1 8h3M12 8h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Residential customers
+        </button>
+        <button class="suggestion" data-text="Create 1 commercial business partner with device, meter reading and billing">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M6 8h4M8 6v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Commercial with devices
+        </button>
+        <button class="suggestion" data-text="Create 3 business partners in Germany and Australia">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><ellipse cx="8" cy="8" rx="3" ry="6" stroke="currentColor" stroke-width="1.5"/></svg>
+          Multi-region partners
+        </button>
+      </div>
+    </div>
 
-        <form id="scenarioForm" class="input-form">
-          <input type="text" id="scenarioInput" placeholder="Describe the scenario..." required autocomplete="off" />
-          <button type="submit" id="submitBtn">Generate</button>
+    <!-- Chat Messages -->
+    <div id="messages" class="messages" hidden>
+      <div id="messagesInner" class="messages-inner"></div>
+    </div>
+
+    <!-- Input Bar -->
+    <div id="inputArea" class="input-area">
+      <div class="input-container">
+        <form id="scenarioForm" autocomplete="off">
+          <textarea id="scenarioInput" placeholder="Describe your scenario..." rows="1"></textarea>
+          <button type="submit" id="submitBtn">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M3.5 14.5L14.5 3.5M14.5 3.5L7.167 4.233M14.5 3.5L13.767 10.833" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
         </form>
+        <p class="input-hint">ISU Agent generates realistic SAP test data. Press Enter to send.</p>
       </div>
+    </div>
 
-      <div class="database-section">
-        <div class="section-header">
-          <h2>Generated Entities (HANA mapped)</h2>
-        </div>
-        <div class="entities-viewer" id="tablesContainer">
-          <p style="color: var(--text-muted); font-size: 0.85rem; padding: 10px;">Waiting for generated entities...</p>
+    <!-- Data Drawer -->
+    <div id="drawerOverlay" class="drawer-overlay" hidden></div>
+    <div id="drawer" class="drawer" hidden>
+      <div class="drawer-header">
+        <h2>Generated Data</h2>
+        <div class="drawer-actions">
+          <span id="entityCount" class="entity-count"></span>
+          <button id="closeDrawer" class="close-btn" title="Close">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
         </div>
       </div>
-    </main>
+      <div id="drawerContent" class="drawer-content"></div>
+    </div>
+
   </div>
-  <script src="/app.js?v=2"></script>
+  <script src="/app.js?v=3"></script>
 </body>
 </html>
