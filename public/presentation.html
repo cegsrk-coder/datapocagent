@@ -472,7 +472,7 @@
     <div class="step-line"></div>
     <div class="step-row">
       <div class="step-num">3</div>
-      <div class="step-text"><strong>Agent selects tools</strong> in correct order: Business Partner → Contract Account → Installation → Device → Readings → Billing</div>
+      <div class="step-text"><strong>Agent selects tools</strong> in correct order: BP → Contract Account → Premise → Connection Object → Installation → Device → Move-In → Meter Reading → Billing</div>
     </div>
     <div class="step-line"></div>
     <div class="step-row">
@@ -497,7 +497,7 @@
 <div class="slide slide-content" id="slide5">
   <div class="acn-watermark"><span class="logo">&gt;</span><span class="name">accenture</span></div>
   <h2>System <span>Architecture</span></h2>
-  <p class="slide-subtitle">5-layer architecture with agent orchestration and 9 ISU tools.</p>
+  <p class="slide-subtitle">5-layer architecture with agent orchestration and 11 ISU tools.</p>
   <div class="arch-container">
     <div class="arch-layer">
       <div class="arch-label purple">UI</div>
@@ -527,11 +527,11 @@
     <div class="arch-layer">
       <div class="arch-label green">TOOLS</div>
       <div class="arch-boxes">
-        <div class="arch-box"><div class="name">create_business_partner</div><div class="desc">BUT000</div></div>
-        <div class="arch-box"><div class="name">create_contract_account</div><div class="desc">FKKVKP</div></div>
-        <div class="arch-box"><div class="name">create_installation</div><div class="desc">EANL</div></div>
-        <div class="arch-box"><div class="name">create_device</div><div class="desc">EGER</div></div>
-        <div class="arch-box"><div class="name">+5 more</div><div class="desc">EABL, EVER, ETTIFN, ERDK</div></div>
+        <div class="arch-box"><div class="name">create_bp</div><div class="desc">BUT000</div></div>
+        <div class="arch-box"><div class="name">create_ca</div><div class="desc">FKKVKP</div></div>
+        <div class="arch-box"><div class="name">create_premise</div><div class="desc">EHAUS</div></div>
+        <div class="arch-box"><div class="name">create_conn_obj</div><div class="desc">ICONNOBJ</div></div>
+        <div class="arch-box"><div class="name">+7 more</div><div class="desc">EANL, EGER, EVER, EABL, ERDK</div></div>
       </div>
     </div>
     <div class="arch-arrow">↓</div>
@@ -629,6 +629,20 @@
           <td>FKKVKP</td>
         </tr>
         <tr>
+          <td class="tool-name">Premise</td>
+          <td class="mono">BAPI_EHAUS_CREATE</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>IEC1</td>
+          <td>EHAUS</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Connection Object</td>
+          <td class="mono">BAPI_EVER_CREATE</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>IESA1</td>
+          <td>ICONNOBJ</td>
+        </tr>
+        <tr>
           <td class="tool-name">Installation</td>
           <td class="mono">ISU_M_EQUI_INSERT</td>
           <td class="no">RAP wrapper needed</td>
@@ -643,13 +657,6 @@
           <td>EGER</td>
         </tr>
         <tr>
-          <td class="tool-name">Meter Reading</td>
-          <td class="mono">BAPI_MTRREADDOC_UPLOAD</td>
-          <td class="no">RAP wrapper needed</td>
-          <td>EL01</td>
-          <td>EABL</td>
-        </tr>
-        <tr>
           <td class="tool-name">Move-In</td>
           <td class="mono">BAPI_ISUMOVEIN_CREATEFROMDATA</td>
           <td class="no">RAP wrapper needed</td>
@@ -661,7 +668,14 @@
           <td class="mono">BAPI_ISUMOVEOUT_CREATEFROMDATA</td>
           <td class="no">RAP wrapper needed</td>
           <td>CIEO</td>
-          <td>ETTIFN</td>
+          <td>EVER</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Meter Reading</td>
+          <td class="mono">BAPI_MTRREADDOC_UPLOAD</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>EL01</td>
+          <td>EABL</td>
         </tr>
         <tr>
           <td class="tool-name">Billing Document</td>

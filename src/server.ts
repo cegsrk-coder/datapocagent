@@ -7,6 +7,8 @@ import { ChatLLM } from './agent/llm';
 import { agentLoop } from './agent/loop';
 import { createBusinessPartner } from './tools/createBusinessPartner';
 import { createContractAccount } from './tools/createContractAccount';
+import { createPremise } from './tools/createPremise';
+import { createConnectionObject } from './tools/createConnectionObject';
 import { createInstallation } from './tools/createInstallation';
 import { createDevice } from './tools/createDevice';
 import { createMeterReading } from './tools/createMeterReading';
@@ -35,6 +37,8 @@ app.post('/api/generate', async (req, res) => {
     const tools = [
       createBusinessPartner,
       createContractAccount,
+      createPremise,
+      createConnectionObject,
       createInstallation,
       createDevice,
       createMeterReading,

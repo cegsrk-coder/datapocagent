@@ -3,7 +3,7 @@ import { Tool, ToolResult } from './index';
 
 export const moveIn: Tool<any, any> = {
   name: 'move_in',
-  description: 'Creates a move-in for a business partner at an installation. Creates a supply contract (EVER) and a move-in document (ETTIFN).',
+  description: 'Creates a move-in by generating a supply contract (EVER) linking a business partner to an installation via contract account.',
   parameters: z.object({
     partnerId: z.string().describe("must exist in entity store"),
     contractAccountId: z.string().describe("must exist in entity store"),
@@ -13,30 +13,19 @@ export const moveIn: Tool<any, any> = {
   }),
   execute: async (input): Promise<ToolResult<any>> => {
     const vertrag = `VT-${Math.floor(Math.random() * 100000).toString().padStart(5, '0')}`;
-    const ettifnId = `ETFI-${Math.floor(Math.random() * 100000).toString().padStart(5, '0')}`;
 
     return {
       success: true,
-      data: [
-        {
-          table: 'EVER',
-          VERTRAG: vertrag,
-          GPART: input.partnerId,
-          VKONT: input.contractAccountId,
-          ANLAGE: input.installationId,
-          EINZDAT: input.moveInDate,
-          VSTATUS: 'ACTIVE'
-        },
-        {
-          table: 'ETTIFN',
-          ETTIFN_ID: ettifnId,
-          VERTRAG: vertrag,
-          ANLAGE: input.installationId,
-          OPERAND: 'MOVE_IN',
-          KEYDATE: input.moveInDate,
-          ZWSTAND: input.initialReading ?? 0
-        }
-      ]
+      data: {
+        table: 'EVER',
+        VERTRAG: vertrag,
+        GPART: input.partnerId,
+        VKONT: input.contractAccountId,
+        ANLAGE: input.installationId,
+        EINZDAT: input.moveInDate,
+        ZWSTAND_IN: input.initialReading ?? 0,
+        VSTATUS: 'ACTIVE'
+      }
     };
   }
 };

@@ -20,11 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const tableLabels = {
     'BUT000': 'Business Partner',
     'FKKVKP': 'Contract Account',
+    'EHAUS': 'Premise',
+    'ICONNOBJ': 'Connection Object',
     'EANL': 'Installation',
     'EGER': 'Device',
     'EABL': 'Meter Reading',
     'EVER': 'Supply Contract',
-    'ETTIFN': 'Move-In/Out Document',
     'ERDK': 'Billing Document',
     'VALIDATION': 'Validation Result'
   };
@@ -32,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const toolLabels = {
     'create_business_partner': { label: 'Create Business Partner', icon: '\ud83d\udc64' },
     'create_contract_account': { label: 'Create Contract Account', icon: '\ud83d\udcdd' },
+    'create_premise': { label: 'Create Premise', icon: '\ud83c\udfe2' },
+    'create_connection_object': { label: 'Create Connection Object', icon: '\ud83d\udd0c' },
     'create_installation': { label: 'Create Installation', icon: '\ud83c\udfe0' },
     'create_device': { label: 'Create Device', icon: '\ud83d\udce1' },
     'create_meter_reading': { label: 'Create Meter Reading', icon: '\ud83d\udccf' },

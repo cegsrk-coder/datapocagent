@@ -23,15 +23,18 @@ export const validateScenario: Tool<any, any> = {
 
     const partners = byTable['BUT000'] || [];
     const contracts = byTable['FKKVKP'] || [];
+    const premises = byTable['EHAUS'] || [];
+    const connObjects = byTable['ICONNOBJ'] || [];
     const installations = byTable['EANL'] || [];
     const devices = byTable['EGER'] || [];
     const readings = byTable['EABL'] || [];
     const supplyContracts = byTable['EVER'] || [];
-    const moveDocuments = byTable['ETTIFN'] || [];
     const billings = byTable['ERDK'] || [];
 
     const partnerIds = new Set(partners.map((p: any) => p.PARTNER));
     const contractIds = new Set(contracts.map((c: any) => c.VKONT));
+    const premiseIds = new Set(premises.map((p: any) => p.VSTELLE));
+    const connObjIds = new Set(connObjects.map((c: any) => c.HAUS));
     const installationIds = new Set(installations.map((i: any) => i.ANLAGE));
     const deviceIds = new Set(devices.map((d: any) => d.GERAET));
     const supplyContractIds = new Set(supplyContracts.map((s: any) => s.VERTRAG));
@@ -43,10 +46,20 @@ export const validateScenario: Tool<any, any> = {
       }
     }
 
-    // Validate installations link to existing contract accounts
+    // Validate connection objects link to existing premises
+    for (const conn of connObjects) {
+      if (!premiseIds.has(conn.VSTELLE)) {
+        errors.push(`Connection Object ${conn.HAUS} references non-existent premise ${conn.VSTELLE}`);
+      }
+    }
+
+    // Validate installations link to existing contract accounts and premises
     for (const inst of installations) {
       if (!contractIds.has(inst.VKONT)) {
         errors.push(`Installation ${inst.ANLAGE} references non-existent contract account ${inst.VKONT}`);
+      }
+      if (inst.VSTELLE && !premiseIds.has(inst.VSTELLE)) {
+        errors.push(`Installation ${inst.ANLAGE} references non-existent premise ${inst.VSTELLE}`);
       }
     }
 
@@ -74,12 +87,6 @@ export const validateScenario: Tool<any, any> = {
       }
     }
 
-    // Validate move-in/out documents link to existing supply contracts
-    for (const doc of moveDocuments) {
-      if (!supplyContractIds.has(doc.VERTRAG)) {
-        errors.push(`Move document ${doc.ETTIFN_ID} references non-existent supply contract ${doc.VERTRAG}`);
-      }
-    }
 
     // Validate billing documents link to existing contract accounts
     for (const bill of billings) {
