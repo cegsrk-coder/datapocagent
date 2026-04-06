@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Data Agent — Presentation</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #000;
+    color: #1a2332;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  .slide {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    padding: 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  /* Accenture footer bar */
+  .slide::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #a100ff, #7b00c4, #a100ff);
+  }
+
+  .acn-watermark {
+    position: absolute;
+    top: 24px; left: 40px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .acn-watermark .logo { font-size: 1.5rem; font-weight: 700; color: #a100ff; }
+  .acn-watermark .name { font-size: .9rem; font-weight: 700; color: #666; }
+
+  .slide-number {
+    position: absolute;
+    bottom: 20px; right: 40px;
+    font-size: .8rem; color: #999;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 8px;
+    z-index: 100;
+  }
+  .nav button {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid #555;
+    background: rgba(0,0,0,.7);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .nav button:hover { background: #a100ff; border-color: #a100ff; }
+
+  /* ═══════ SLIDE STYLES ═══════ */
+
+  /* Slide 1: Title */
+  .slide-title {
+    background: linear-gradient(135deg, #0c0014 0%, #1a0033 40%, #2d004d 100%);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+  }
+  .slide-title .big-gt {
+    font-size: 6rem;
+    font-weight: 700;
+    color: #a100ff;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .slide-title h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    margin-bottom: 12px;
+  }
+  .slide-title h1 span { color: #a100ff; }
+  .slide-title .subtitle {
+    font-size: 1.25rem;
+    color: #b8a0d0;
+    max-width: 700px;
+    line-height: 1.6;
+  }
+  .slide-title .tags {
+    display: flex; gap: 12px; margin-top: 32px;
+  }
+  .slide-title .tag {
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: 1px solid rgba(161,0,255,.4);
+    font-size: .85rem;
+    color: #d4b0ff;
+  }
+
+  /* Content slides */
+  .slide-content {
+    background: #fff;
+    padding-top: 80px;
+  }
+  .slide-content h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a2332;
+    margin-bottom: 8px;
+  }
+  .slide-content h2 span { color: #a100ff; }
+  .slide-content .slide-subtitle {
+    font-size: 1rem;
+    color: #5a6b7f;
+    margin-bottom: 36px;
+  }
+
+  /* Problem cards */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+  }
+  .problem-card {
+    background: #faf5ff;
+    border: 1px solid #e8d5ff;
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .problem-card .icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: #a100ff;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  .problem-card h3 { font-size: 1rem; font-weight: 600; color: #1a2332; margin-bottom: 6px; }
+  .problem-card p { font-size: .875rem; color: #5a6b7f; line-height: 1.5; }
+
+  /* What is section */
+  .what-is-box {
+    background: linear-gradient(135deg, #faf5ff, #f0e6ff);
+    border: 2px solid #d4b0ff;
+    border-radius: 20px;
+    padding: 40px 48px;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #2d004d;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .what-is-box strong { color: #a100ff; }
+  .features-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+    justify-content: center;
+  }
+  .feature-chip {
+    padding: 12px 24px;
+    background: #fff;
+    border: 1px solid #e2e6ed;
+    border-radius: 12px;
+    font-size: .875rem;
+    font-weight: 500;
+    color: #1a2332;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04);
+  }
+  .feature-chip .emoji { margin-right: 8px; }
+
+  /* How it works - steps */
+  .steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    flex: 1;
+    justify-content: center;
+  }
+  .step-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .step-num {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #a100ff;
+    color: #fff;
+    font-size: .9rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-line {
+    width: 2px;
+    height: 20px;
+    background: #d4b0ff;
+    margin-left: 19px;
+  }
+  .step-text {
+    font-size: 1rem;
+    color: #1a2332;
+    line-height: 1.4;
+  }
+  .step-text strong { color: #a100ff; }
+
+  /* Architecture */
+  .arch-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    justify-content: center;
+  }
+  .arch-layer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .arch-label {
+    width: 90px;
+    padding: 8px 0;
+    text-align: center;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #fff;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .arch-label.purple { background: #a100ff; }
+  .arch-label.blue { background: #0076d6; }
+  .arch-label.orange { background: #e85d04; }
+  .arch-label.green { background: #16a34a; }
+  .arch-label.gray { background: #6b7280; }
+  .arch-boxes {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+  }
+  .arch-box {
+    flex: 1;
+    background: #f8f9fc;
+    border: 1px solid #e2e6ed;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .arch-box .name { font-size: .8rem; font-weight: 600; color: #1a2332; }
+  .arch-box .desc { font-size: .7rem; color: #5a6b7f; margin-top: 2px; }
+  .arch-arrow {
+    text-align: center;
+    color: #d4b0ff;
+    font-size: .9rem;
+    margin-left: 102px;
+  }
+
+  /* Tech stack */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .tech-card {
+    background: #faf5ff;
+    border: 1px solid #e8d5ff;
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+  }
+  .tech-card .icon { font-size: 2rem; margin-bottom: 10px; }
+  .tech-card h3 { font-size: .95rem; font-weight: 600; color: #1a2332; margin-bottom: 4px; }
+  .tech-card p { font-size: .78rem; color: #5a6b7f; }
+
+  /* BAPI mapping */
+  .bapi-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .8rem;
+  }
+  .bapi-table th {
+    padding: 10px 14px;
+    background: #a100ff;
+    color: #fff;
+    text-align: left;
+    font-weight: 600;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+  }
+  .bapi-table th:first-child { border-radius: 8px 0 0 0; }
+  .bapi-table th:last-child { border-radius: 0 8px 0 0; }
+  .bapi-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #eee;
+    color: #1a2332;
+  }
+  .bapi-table tr:nth-child(even) td { background: #faf9fc; }
+  .bapi-table .mono { font-family: Consolas, monospace; font-size: .75rem; color: #5a6b7f; }
+  .bapi-table .yes { color: #16a34a; font-weight: 600; }
+  .bapi-table .no { color: #dc2626; font-size: .75rem; }
+  .bapi-table .tool-name { font-weight: 600; color: #a100ff; }
+
+  /* Future */
+  .future-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+  }
+  .future-card {
+    background: #f8f9fc;
+    border: 1px solid #e2e6ed;
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .future-card .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .future-card .badge.now { background: #f0fdf4; color: #16a34a; }
+  .future-card .badge.next { background: #fff3e0; color: #e85d04; }
+  .future-card .badge.future { background: #e8f2fc; color: #0076d6; }
+  .future-card h3 { font-size: 1rem; font-weight: 600; color: #1a2332; margin-bottom: 6px; }
+  .future-card p { font-size: .85rem; color: #5a6b7f; line-height: 1.5; }
+
+  /* Demo slide */
+  .demo-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .demo-center .big-icon { font-size: 4rem; margin-bottom: 16px; }
+  .demo-center h2 { font-size: 2.5rem; margin-bottom: 12px; }
+  .demo-center p { font-size: 1.1rem; color: #5a6b7f; }
+  .demo-url {
+    margin-top: 24px;
+    padding: 12px 32px;
+    background: #a100ff;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide slide-title active" id="slide1">
+  <div class="acn-watermark">
+    <span class="logo" style="color:#7b00c4">&gt;</span>
+    <span class="name" style="color:#b8a0d0">accenture</span>
+  </div>
+  <div class="big-gt">&gt;</div>
+  <h1>AI <span>DATA AGENT</span></h1>
+  <div class="subtitle">
+    Automated SAP ISU test data creation using natural language commands.<br>
+    Powered by Azure OpenAI GPT-4.1 with intelligent tool orchestration.
+  </div>
+  <div class="tags">
+    <span class="tag">S/4HANA ISU</span>
+    <span class="tag">Azure OpenAI</span>
+    <span class="tag">Test Automation</span>
+    <span class="tag">Agent Architecture</span>
+  </div>
+  <div class="slide-number">1 / 9</div>
+</div>
+
+<!-- SLIDE 2: The Problem -->
+<div class="slide slide-content" id="slide2">
+  <div class="acn-watermark"><span class="logo">&gt;</span><span class="name">accenture</span></div>
+  <h2>The Problem <span>We Are Solving</span></h2>
+  <p class="slide-subtitle">Manual SAP ISU test data creation is slow, error-prone, and costly.</p>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="icon">📊</div>
+      <div>
+        <h3>Data Spread Across Tables</h3>
+        <p>SAP ISU data lives in BUT000, FKKVKP, EANL, EGER, EABL, EVER, ERDK — testers must understand complex table relationships.</p>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="icon">⏱️</div>
+      <div>
+        <h3>Time Consuming</h3>
+        <p>Finding and creating test data for scenarios like move-in/out with billing takes hours of manual effort per scenario.</p>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="icon">⚠️</div>
+      <div>
+        <h3>Manual Errors</h3>
+        <p>Manual table searches during testing increase effort and errors. Referential integrity is easily broken across dependent entities.</p>
+      </div>
+    </div>
+    <div class="problem-card">
+      <div class="icon">🔄</div>
+      <div>
+        <h3>Repeated During Every Cycle</h3>
+        <p>Upgrades, system refreshes, and everyday testing all require fresh data creation — the same painful process repeated endlessly.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">2 / 9</div>
+</div>
+
+<!-- SLIDE 3: What Is It -->
+<div class="slide slide-content" id="slide3">
+  <div class="acn-watermark"><span class="logo">&gt;</span><span class="name">accenture</span></div>
+  <h2>What is <span>AI Data Agent?</span></h2>
+  <p class="slide-subtitle">An AI-powered assistant that understands SAP ISU domain knowledge.</p>
+  <div class="what-is-box">
+    An <strong>intelligent agent</strong> that generates realistic SAP ISU test data using <strong>natural language commands</strong>, eliminating manual table searches and speeding up testing activities.
+    <br><br>
+    Just type: <em>"Create 10 residential customers with meter readings, move-in, and 3 months of billing"</em>
+    <br>— the agent handles the rest.
+  </div>
+  <div class="features-row">
+    <div class="feature-chip"><span class="emoji">💬</span>Natural Language Input</div>
+    <div class="feature-chip"><span class="emoji">🔗</span>Referential Integrity</div>
+    <div class="feature-chip"><span class="emoji">📊</span>Excel Export</div>
+    <div class="feature-chip"><span class="emoji">🤖</span>Multi-Turn Agent</div>
+    <div class="feature-chip"><span class="emoji">✅</span>Auto Validation</div>
+  </div>
+  <div class="slide-number">3 / 9</div>
+</div>
+
+<!-- SLIDE 4: How It Works -->
+<div class="slide slide-content" id="slide4">
+  <div class="acn-watermark"><span class="logo">&gt;</span><span class="name">accenture</span></div>
+  <h2>How <span>It Works</span></h2>
+  <p class="slide-subtitle">A 6-step agentic loop powered by Azure OpenAI function calling.</p>
+  <div class="steps-container">
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>User gives command</strong> — e.g. "Create 5 residential customers with move-in and billing"</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>AI Agent understands</strong> the business intent and maps it to ISU entity dependency chain</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>Agent selects tools</strong> in correct order: Business Partner → Contract Account → Installation → Device → Readings → Billing</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-row">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>Tools execute</strong> with Zod-validated schemas, generating realistic IDs, names, and values</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-row">
+      <div class="step-num">5</div>
+      <div class="step-text"><strong>Validation runs</strong> automatically — checks referential integrity across all created entities</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-row">
+      <div class="step-num">6</div>
+      <div class="step-text"><strong>Data is presented</strong> in structured SAP table format with one-click Excel export</div>
+    </div>
+  </div>
+  <div class="slide-number">4 / 9</div>
+</div>
+
+<!-- SLIDE 5: Architecture -->
+<div class="slide slide-content" id="slide5">
+  <div class="acn-watermark"><span class="logo">&gt;</span><span class="name">accenture</span></div>
+  <h2>System <span>Architecture</span></h2>
+  <p class="slide-subtitle">5-layer architecture with agent orchestration and 9 ISU tools.</p>
+  <div class="arch-container">
+    <div class="arch-layer">
+      <div class="arch-label purple">UI</div>
+      <div class="arch-boxes">
+        <div class="arch-box"><div class="name">Chat Interface</div><div class="desc">Natural language input + scenario suggestions</div></div>
+        <div class="arch-box"><div class="name">Data Viewer</div><div class="desc">Full-page tables with Excel export</div></div>
+      </div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer">
+      <div class="arch-label blue">API</div>
+      <div class="arch-boxes">
+        <div class="arch-box"><div class="name">Express Server</div><div class="desc">POST /api/generate — orchestrates agent</div></div>
+        <div class="arch-box"><div class="name">Entity Store</div><div class="desc">Per-request isolation, ID tracking</div></div>
+      </div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer">
+      <div class="arch-label orange">AGENT</div>
+      <div class="arch-boxes">
+        <div class="arch-box"><div class="name">Agent Loop (20 turns)</div><div class="desc">Multi-turn tool orchestration</div></div>
+        <div class="arch-box"><div class="name">Azure OpenAI GPT-4.1</div><div class="desc">Function calling + value generation</div></div>
+        <div class="arch-box"><div class="name">System Prompt</div><div class="desc">Dynamic rules + entity context</div></div>
+      </div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer">
+      <div class="arch-label green">TOOLS</div>
+      <div class="arch-boxes">
+        <div class="arch-box"><div class="name">create_business_partner</div><div class="desc">BUT000</div></div>
+        <div class="arch-box"><div class="name">create_contract_account</div><div class="desc">FKKVKP</div></div>
+        <div class="arch-box"><div class="name">create_installation</div><div class="desc">EANL</div></div>
+        <div class="arch-box"><div class="name">create_device</div><div class="desc">EGER</div></div>
+        <div class="arch-box"><div class="name">+5 more</div><div class="desc">EABL, EVER, ETTIFN, ERDK</div></div>
+      </div>
+    </div>
+    <div class="arch-arrow">↓</div>
+    <div class="arch-layer">
+      <div class="arch-label gray">INFRA</div>
+      <div class="arch-boxes">
+        <div class="arch-box"><div class="name">Azure App Service</div><div class="desc">Node.js 20 LTS</div></div>
+        <div class="arch-box"><div class="name">Azure OpenAI</div><div class="desc">GPT-4.1 deployment</div></div>
+        <div class="arch-box"><div class="name">GitHub</div><div class="desc">CI/CD deployment</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">5 / 9</div>
+</div>
+
+<!-- SLIDE 6: Tools & Technologies -->
+<div class="slide slide-content" id="slide6">
+  <div class="acn-watermark"><span class="logo">&gt;</span><span class="name">accenture</span></div>
+  <h2>Tools & <span>Technologies</span></h2>
+  <p class="slide-subtitle">Built with modern cloud-native stack for scalability and speed.</p>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <div class="icon">🧠</div>
+      <h3>Azure OpenAI</h3>
+      <p>GPT-4.1 with function calling for intelligent tool selection and value generation</p>
+    </div>
+    <div class="tech-card">
+      <div class="icon">🏢</div>
+      <h3>SAP S/4HANA ISU</h3>
+      <p>Target system — BUT000, FKKVKP, EANL, EGER, EABL, EVER, ERDK tables</p>
+    </div>
+    <div class="tech-card">
+      <div class="icon">⚡</div>
+      <h3>TypeScript + Express</h3>
+      <p>Type-safe server with Zod schema validation for every tool input</p>
+    </div>
+    <div class="tech-card">
+      <div class="icon">🔧</div>
+      <h3>Agent Framework</h3>
+      <p>Custom agent loop with multi-turn orchestration (max 20 turns)</p>
+    </div>
+    <div class="tech-card">
+      <div class="icon">💬</div>
+      <h3>Chat UI</h3>
+      <p>Responsive web interface with scenario suggestions and grouped tool cards</p>
+    </div>
+    <div class="tech-card">
+      <div class="icon">📊</div>
+      <h3>Data Viewer + Export</h3>
+      <p>Full-page entity viewer with per-table and Export All to .xlsx</p>
+    </div>
+    <div class="tech-card">
+      <div class="icon">☁️</div>
+      <h3>Azure App Service</h3>
+      <p>Cloud hosting with Node.js 20 LTS runtime</p>
+    </div>
+    <div class="tech-card">
+      <div class="icon">📁</div>
+      <h3>GitHub + CI/CD</h3>
+      <p>Source control with automated deployment pipeline</p>
+    </div>
+  </div>
+  <div class="slide-number">6 / 9</div>
+</div>
+
+<!-- SLIDE 7: BAPI Mapping (Roadmap) -->
+<div class="slide slide-content" id="slide7">
+  <div class="acn-watermark"><span class="logo">&gt;</span><span class="name">accenture</span></div>
+  <h2>SAP Integration <span>Roadmap</span></h2>
+  <p class="slide-subtitle">Each tool maps to real SAP BAPIs for live system integration.</p>
+  <div style="flex:1;overflow:auto;">
+    <table class="bapi-table">
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>SAP BAPI / Function Module</th>
+          <th>OData Available?</th>
+          <th>T-Code</th>
+          <th>SAP Table</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="tool-name">Business Partner</td>
+          <td class="mono">BAPI_BUPA_CREATE_FROM_DATA</td>
+          <td class="yes">API_BUSINESS_PARTNER</td>
+          <td>BP</td>
+          <td>BUT000</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Contract Account</td>
+          <td class="mono">BAPI_ISUACCOUNT_CREATEFROMDATA</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>CAA1</td>
+          <td>FKKVKP</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Installation</td>
+          <td class="mono">ISU_M_EQUI_INSERT</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>CISS</td>
+          <td>EANL</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Device</td>
+          <td class="mono">ISU_M_EQUI_INSERT</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>IQ01</td>
+          <td>EGER</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Meter Reading</td>
+          <td class="mono">BAPI_MTRREADDOC_UPLOAD</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>EL01</td>
+          <td>EABL</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Move-In</td>
+          <td class="mono">BAPI_ISUMOVEIN_CREATEFROMDATA</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>CIEM</td>
+          <td>EVER</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Move-Out</td>
+          <td class="mono">BAPI_ISUMOVEOUT_CREATEFROMDATA</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>CIEO</td>
+          <td>ETTIFN</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Billing Document</td>
+          <td class="mono">BAPI_ISTBILLDOC_CREATEMULTIPLE</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>FKMI</td>
+          <td>ERDK</td>
+        </tr>
+        <tr>
+          <td class="tool-name">Validate</td>
+          <td class="mono">ISU_O_METERREAD_ACTION</td>
+          <td class="no">RAP wrapper needed</td>
+          <td>—</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="slide-number">7 / 9</div>
+</div>
+
+<!-- SLIDE 8: Future Enhancements -->
+<div class="slide slide-content" id="slide8">
+  <div class="acn-watermark"><span class="logo">&gt;</span><span class="name">accenture</span></div>
+  <h2>Future <span>Enhancements</span></h2>
+  <p class="slide-subtitle">Roadmap from POC to production-grade solution.</p>
+  <div class="future-grid">
+    <div class="future-card">
+      <span class="badge now">Phase 1 — Now</span>
+      <h3>SQLite Persistence</h3>
+      <p>Store generated data in SQLite so it persists across sessions. Add query tools so the agent can find existing data.</p>
+    </div>
+    <div class="future-card">
+      <span class="badge now">Phase 1 — Now</span>
+      <h3>SAP RFC Integration</h3>
+      <p>Connect to real SAP S/4HANA via node-rfc. Replace mock tools with actual BAPI calls for live data creation.</p>
+    </div>
+    <div class="future-card">
+      <span class="badge next">Phase 2 — Next</span>
+      <h3>RAP OData Wrappers</h3>
+      <p>Wrap ISU BAPIs in RAP Unmanaged Scenarios to expose as OData V4 services for cloud-native integration.</p>
+    </div>
+    <div class="future-card">
+      <span class="badge next">Phase 2 — Next</span>
+      <h3>Export Formats</h3>
+      <p>Add BDC session export, SQL script generation, and IDoc XML export for flexible SAP data loading.</p>
+    </div>
+    <div class="future-card">
+      <span class="badge future">Phase 3 — Future</span>
+      <h3>Learning & Auto-Suggest</h3>
+      <p>Learn from user feedback. Auto-suggest test data scenarios based on past usage patterns and testing cycles.</p>
+    </div>
+    <div class="future-card">
+      <span class="badge future">Phase 3 — Future</span>
+      <h3>Role-Based Access & Audit</h3>
+      <p>Enterprise-grade access control, audit logging, and integration with SAP authorization objects.</p>
+    </div>
+  </div>
+  <div class="slide-number">8 / 9</div>
+</div>
+
+<!-- SLIDE 9: Live Demo -->
+<div class="slide slide-content" id="slide9">
+  <div class="acn-watermark"><span class="logo">&gt;</span><span class="name">accenture</span></div>
+  <div class="demo-center">
+    <div class="big-icon">🚀</div>
+    <h2>Live <span>Demo</span></h2>
+    <p>Let's see the AI Data Agent in action.</p>
+    <a class="demo-url" href="https://datapocagent-d6ape5crdhevcccr.canadacentral-01.azurewebsites.net/" target="_blank">Launch AI Data Agent →</a>
+    <div class="features-row" style="margin-top:40px;">
+      <div class="feature-chip"><span class="emoji">1.</span> Create residential customers</div>
+      <div class="feature-chip"><span class="emoji">2.</span> Move-in with meter readings</div>
+      <div class="feature-chip"><span class="emoji">3.</span> Generate billing + Export All</div>
+    </div>
+  </div>
+  <div class="slide-number">9 / 9</div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prev()">&#8592;</button>
+  <button onclick="next()">&#8594;</button>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function show(i) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[i].classList.add('active');
+    current = i;
+  }
+
+  function next() { if (current < total - 1) show(current + 1); }
+  function prev() { if (current > 0) show(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+</script>
+</body>
+</html>

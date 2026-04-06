@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 980" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+  <defs>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8" fill="#a100ff"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="980" rx="16" fill="#f8f9fc"/>
+
+  <!-- Title -->
+  <text x="600" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#a100ff">&gt; accenture</text>
+  <text x="600" y="62" text-anchor="middle" font-size="20" font-weight="600" fill="#1a2332">S/4HANA ISU Test Data Agent — Integration Roadmap</text>
+  <text x="600" y="82" text-anchor="middle" font-size="12" fill="#5a6b7f">From Mock Data Generation to Real SAP System Integration</text>
+
+  <!-- ═══════════ CURRENT STATE (Left) ═══════════ -->
+  <rect x="40" y="110" width="520" height="390" rx="14" fill="#fff" stroke="#a100ff" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="40" y="110" width="520" height="36" rx="14" fill="#a100ff"/>
+  <rect x="40" y="132" width="520" height="14" fill="#a100ff"/>
+  <text x="300" y="134" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">CURRENT STATE — Mock Data Generation</text>
+
+  <!-- Current: Chat UI -->
+  <rect x="65" y="160" width="470" height="44" rx="8" fill="#f3e8ff" stroke="#e2e6ed"/>
+  <text x="85" y="178" font-size="14">💬</text>
+  <text x="108" y="178" font-size="11" font-weight="600" fill="#1a2332">Chat UI</text>
+  <text x="108" y="194" font-size="9" fill="#5a6b7f">Natural language scenario input → Express Server</text>
+
+  <line x1="300" y1="204" x2="300" y2="218" stroke="#a100ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Current: Agent Loop -->
+  <rect x="65" y="222" width="470" height="44" rx="8" fill="#fff3e0" stroke="#e2e6ed"/>
+  <text x="85" y="240" font-size="14">🤖</text>
+  <text x="108" y="240" font-size="11" font-weight="600" fill="#1a2332">Agent Loop + Azure OpenAI GPT-4.1</text>
+  <text x="108" y="256" font-size="9" fill="#5a6b7f">Multi-turn orchestration with function calling</text>
+
+  <line x1="300" y1="266" x2="300" y2="280" stroke="#a100ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Current: Mock Tools -->
+  <rect x="65" y="284" width="470" height="44" rx="8" fill="#f0fdf4" stroke="#e2e6ed"/>
+  <text x="85" y="302" font-size="14">🔧</text>
+  <text x="108" y="302" font-size="11" font-weight="600" fill="#1a2332">9 Mock Tools</text>
+  <text x="108" y="318" font-size="9" fill="#5a6b7f">Generate random IDs, names, values — no SAP connection</text>
+
+  <line x1="300" y1="328" x2="300" y2="342" stroke="#a100ff" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Current: In-Memory Store -->
+  <rect x="65" y="346" width="470" height="44" rx="8" fill="#e8f2fc" stroke="#e2e6ed"/>
+  <text x="85" y="364" font-size="14">📦</text>
+  <text x="108" y="364" font-size="11" font-weight="600" fill="#1a2332">In-Memory Entity Store</text>
+  <text x="108" y="380" font-size="9" fill="#5a6b7f">Temporary storage → Excel export</text>
+
+  <!-- Current: Output -->
+  <rect x="65" y="408" width="220" height="36" rx="8" fill="#fff" stroke="#e2e6ed"/>
+  <text x="85" y="430" font-size="10" font-weight="600" fill="#16a34a">Output: .xlsx files</text>
+
+  <rect x="310" y="408" width="225" height="36" rx="8" fill="#fff" stroke="#e2e6ed"/>
+  <text x="330" y="430" font-size="10" font-weight="600" fill="#16a34a">Output: Web Data Viewer</text>
+
+  <!-- ═══════════ BIG ARROW ═══════════ -->
+  <text x="590" y="310" font-size="32" fill="#a100ff" font-weight="700">→</text>
+
+  <!-- ═══════════ FUTURE STATE (Right) ═══════════ -->
+  <rect x="640" y="110" width="520" height="390" rx="14" fill="#fff" stroke="#0076d6" stroke-width="1.5" filter="url(#shadow)"/>
+  <rect x="640" y="110" width="520" height="36" rx="14" fill="#0076d6"/>
+  <rect x="640" y="132" width="520" height="14" fill="#0076d6"/>
+  <text x="900" y="134" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">FUTURE STATE — Real SAP Integration</text>
+
+  <!-- Future: Same Chat UI -->
+  <rect x="665" y="160" width="470" height="44" rx="8" fill="#f3e8ff" stroke="#e2e6ed"/>
+  <text x="685" y="178" font-size="14">💬</text>
+  <text x="708" y="178" font-size="11" font-weight="600" fill="#1a2332">Chat UI</text>
+  <text x="708" y="194" font-size="9" fill="#5a6b7f">Same interface — user experience unchanged</text>
+
+  <line x1="900" y1="204" x2="900" y2="218" stroke="#0076d6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Future: Same Agent -->
+  <rect x="665" y="222" width="470" height="44" rx="8" fill="#fff3e0" stroke="#e2e6ed"/>
+  <text x="685" y="240" font-size="14">🤖</text>
+  <text x="708" y="240" font-size="11" font-weight="600" fill="#1a2332">Agent Loop + Azure OpenAI GPT-4.1</text>
+  <text x="708" y="256" font-size="9" fill="#5a6b7f">Same orchestration — tools now call real SAP APIs</text>
+
+  <line x1="900" y1="266" x2="900" y2="280" stroke="#0076d6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Future: Real SAP Tools -->
+  <rect x="665" y="284" width="470" height="44" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="685" y="302" font-size="14">🔗</text>
+  <text x="708" y="302" font-size="11" font-weight="600" fill="#1a2332">9 SAP-Connected Tools (RFC / OData)</text>
+  <text x="708" y="318" font-size="9" fill="#5a6b7f">Call real BAPIs → create data in SAP system</text>
+
+  <line x1="900" y1="328" x2="900" y2="342" stroke="#0076d6" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Future: SAP System -->
+  <rect x="665" y="346" width="470" height="44" rx="8" fill="#e8f2fc" stroke="#0076d6" stroke-width="1.5"/>
+  <text x="685" y="364" font-size="14">🏢</text>
+  <text x="708" y="364" font-size="11" font-weight="600" fill="#1a2332">SAP S/4HANA ISU System</text>
+  <text x="708" y="380" font-size="9" fill="#5a6b7f">Real database tables: BUT000, FKKVKP, EANL, EGER, EABL, EVER, ERDK</text>
+
+  <!-- Future: Output -->
+  <rect x="665" y="408" width="150" height="36" rx="8" fill="#fff" stroke="#e2e6ed"/>
+  <text x="685" y="430" font-size="10" font-weight="600" fill="#16a34a">SAP Live Data</text>
+
+  <rect x="830" y="408" width="150" height="36" rx="8" fill="#fff" stroke="#e2e6ed"/>
+  <text x="850" y="430" font-size="10" font-weight="600" fill="#16a34a">BDC / IDoc Export</text>
+
+  <rect x="995" y="408" width="140" height="36" rx="8" fill="#fff" stroke="#e2e6ed"/>
+  <text x="1015" y="430" font-size="10" font-weight="600" fill="#16a34a">Excel / SQL Export</text>
+
+  <!-- ═══════════ BAPI MAPPING TABLE ═══════════ -->
+  <rect x="40" y="530" width="1120" height="430" rx="14" fill="#fff" stroke="#e2e6ed" filter="url(#shadow)"/>
+  <text x="60" y="558" font-size="14" font-weight="700" fill="#1a2332">SAP Integration Mapping — Tool → BAPI → OData</text>
+
+  <!-- Table Header -->
+  <rect x="60" y="572" width="1080" height="30" rx="6" fill="#f3e8ff"/>
+  <text x="80" y="592" font-size="10" font-weight="700" fill="#a100ff">TOOL</text>
+  <text x="260" y="592" font-size="10" font-weight="700" fill="#a100ff">SAP BAPI / FM</text>
+  <text x="540" y="592" font-size="10" font-weight="700" fill="#a100ff">ODATA SERVICE</text>
+  <text x="750" y="592" font-size="10" font-weight="700" fill="#a100ff">RAP WRAPPER?</text>
+  <text x="900" y="592" font-size="10" font-weight="700" fill="#a100ff">T-CODE</text>
+  <text x="1000" y="592" font-size="10" font-weight="700" fill="#a100ff">SAP TABLE</text>
+
+  <!-- Row 1: BP -->
+  <rect x="60" y="606" width="1080" height="34" rx="0" fill="#fff"/>
+  <line x1="60" y1="640" x2="1140" y2="640" stroke="#eee" stroke-width="1"/>
+  <text x="80" y="626" font-size="10" font-weight="600" fill="#1a2332">Business Partner</text>
+  <text x="260" y="626" font-size="9.5" fill="#5a6b7f" font-family="Consolas, monospace">BAPI_BUPA_CREATE_FROM_DATA</text>
+  <text x="540" y="626" font-size="9.5" fill="#16a34a" font-weight="600">API_BUSINESS_PARTNER</text>
+  <text x="750" y="626" font-size="9.5" fill="#16a34a" font-weight="600">No — native OData</text>
+  <text x="900" y="626" font-size="9.5" fill="#5a6b7f">BP</text>
+  <text x="1000" y="626" font-size="9.5" fill="#a100ff" font-weight="600">BUT000</text>
+
+  <!-- Row 2: CA -->
+  <rect x="60" y="640" width="1080" height="34" rx="0" fill="#faf9fc"/>
+  <line x1="60" y1="674" x2="1140" y2="674" stroke="#eee" stroke-width="1"/>
+  <text x="80" y="660" font-size="10" font-weight="600" fill="#1a2332">Contract Account</text>
+  <text x="260" y="660" font-size="9.5" fill="#5a6b7f" font-family="Consolas, monospace">BAPI_ISUACCOUNT_CREATEFROMDATA</text>
+  <text x="540" y="660" font-size="9.5" fill="#dc2626">Not available</text>
+  <text x="750" y="660" font-size="9.5" fill="#e85d04" font-weight="600">Yes — RAP needed</text>
+  <text x="900" y="660" font-size="9.5" fill="#5a6b7f">CAA1</text>
+  <text x="1000" y="660" font-size="9.5" fill="#a100ff" font-weight="600">FKKVKP</text>
+
+  <!-- Row 3: Installation -->
+  <rect x="60" y="674" width="1080" height="34" rx="0" fill="#fff"/>
+  <line x1="60" y1="708" x2="1140" y2="708" stroke="#eee" stroke-width="1"/>
+  <text x="80" y="694" font-size="10" font-weight="600" fill="#1a2332">Installation</text>
+  <text x="260" y="694" font-size="9.5" fill="#5a6b7f" font-family="Consolas, monospace">ISU_M_EQUI_INSERT</text>
+  <text x="540" y="694" font-size="9.5" fill="#dc2626">Not available</text>
+  <text x="750" y="694" font-size="9.5" fill="#e85d04" font-weight="600">Yes — RAP needed</text>
+  <text x="900" y="694" font-size="9.5" fill="#5a6b7f">CISS</text>
+  <text x="1000" y="694" font-size="9.5" fill="#a100ff" font-weight="600">EANL</text>
+
+  <!-- Row 4: Device -->
+  <rect x="60" y="708" width="1080" height="34" rx="0" fill="#faf9fc"/>
+  <line x1="60" y1="742" x2="1140" y2="742" stroke="#eee" stroke-width="1"/>
+  <text x="80" y="728" font-size="10" font-weight="600" fill="#1a2332">Device</text>
+  <text x="260" y="728" font-size="9.5" fill="#5a6b7f" font-family="Consolas, monospace">ISU_M_EQUI_INSERT</text>
+  <text x="540" y="728" font-size="9.5" fill="#dc2626">Not available</text>
+  <text x="750" y="728" font-size="9.5" fill="#e85d04" font-weight="600">Yes — RAP needed</text>
+  <text x="900" y="728" font-size="9.5" fill="#5a6b7f">IQ01</text>
+  <text x="1000" y="728" font-size="9.5" fill="#a100ff" font-weight="600">EGER</text>
+
+  <!-- Row 5: Meter Reading -->
+  <rect x="60" y="742" width="1080" height="34" rx="0" fill="#fff"/>
+  <line x1="60" y1="776" x2="1140" y2="776" stroke="#eee" stroke-width="1"/>
+  <text x="80" y="762" font-size="10" font-weight="600" fill="#1a2332">Meter Reading</text>
+  <text x="260" y="762" font-size="9.5" fill="#5a6b7f" font-family="Consolas, monospace">BAPI_MTRREADDOC_UPLOAD</text>
+  <text x="540" y="762" font-size="9.5" fill="#dc2626">Not available</text>
+  <text x="750" y="762" font-size="9.5" fill="#e85d04" font-weight="600">Yes — RAP needed</text>
+  <text x="900" y="762" font-size="9.5" fill="#5a6b7f">EL01</text>
+  <text x="1000" y="762" font-size="9.5" fill="#a100ff" font-weight="600">EABL</text>
+
+  <!-- Row 6: Move-In -->
+  <rect x="60" y="776" width="1080" height="34" rx="0" fill="#faf9fc"/>
+  <line x1="60" y1="810" x2="1140" y2="810" stroke="#eee" stroke-width="1"/>
+  <text x="80" y="796" font-size="10" font-weight="600" fill="#1a2332">Move-In</text>
+  <text x="260" y="796" font-size="9.5" fill="#5a6b7f" font-family="Consolas, monospace">BAPI_ISUMOVEIN_CREATEFROMDATA</text>
+  <text x="540" y="796" font-size="9.5" fill="#dc2626">Not available</text>
+  <text x="750" y="796" font-size="9.5" fill="#e85d04" font-weight="600">Yes — RAP needed</text>
+  <text x="900" y="796" font-size="9.5" fill="#5a6b7f">CIEM</text>
+  <text x="1000" y="796" font-size="9.5" fill="#a100ff" font-weight="600">EVER</text>
+
+  <!-- Row 7: Move-Out -->
+  <rect x="60" y="810" width="1080" height="34" rx="0" fill="#fff"/>
+  <line x1="60" y1="844" x2="1140" y2="844" stroke="#eee" stroke-width="1"/>
+  <text x="80" y="830" font-size="10" font-weight="600" fill="#1a2332">Move-Out</text>
+  <text x="260" y="830" font-size="9.5" fill="#5a6b7f" font-family="Consolas, monospace">BAPI_ISUMOVEOUT_CREATEFROMDATA</text>
+  <text x="540" y="830" font-size="9.5" fill="#dc2626">Not available</text>
+  <text x="750" y="830" font-size="9.5" fill="#e85d04" font-weight="600">Yes — RAP needed</text>
+  <text x="900" y="830" font-size="9.5" fill="#5a6b7f">CIEO</text>
+  <text x="1000" y="830" font-size="9.5" fill="#a100ff" font-weight="600">ETTIFN</text>
+
+  <!-- Row 8: Billing -->
+  <rect x="60" y="844" width="1080" height="34" rx="0" fill="#faf9fc"/>
+  <line x1="60" y1="878" x2="1140" y2="878" stroke="#eee" stroke-width="1"/>
+  <text x="80" y="864" font-size="10" font-weight="600" fill="#1a2332">Billing Document</text>
+  <text x="260" y="864" font-size="9.5" fill="#5a6b7f" font-family="Consolas, monospace">BAPI_ISTBILLDOC_CREATEMULTIPLE</text>
+  <text x="540" y="864" font-size="9.5" fill="#dc2626">Not available</text>
+  <text x="750" y="864" font-size="9.5" fill="#e85d04" font-weight="600">Yes — RAP needed</text>
+  <text x="900" y="864" font-size="9.5" fill="#5a6b7f">FKMI</text>
+  <text x="1000" y="864" font-size="9.5" fill="#a100ff" font-weight="600">ERDK</text>
+
+  <!-- Row 9: Validate -->
+  <rect x="60" y="878" width="1080" height="34" rx="0" fill="#fff"/>
+  <text x="80" y="898" font-size="10" font-weight="600" fill="#1a2332">Validate Scenario</text>
+  <text x="260" y="898" font-size="9.5" fill="#5a6b7f" font-family="Consolas, monospace">ISU_O_METERREAD_ACTION</text>
+  <text x="540" y="898" font-size="9.5" fill="#dc2626">Not available</text>
+  <text x="750" y="898" font-size="9.5" fill="#e85d04" font-weight="600">Yes — RAP needed</text>
+  <text x="900" y="898" font-size="9.5" fill="#5a6b7f">—</text>
+  <text x="1000" y="898" font-size="9.5" fill="#a100ff" font-weight="600">Validation</text>
+
+  <!-- Legend -->
+  <rect x="60" y="928" width="14" height="14" rx="3" fill="#16a34a"/>
+  <text x="82" y="940" font-size="10" fill="#5a6b7f">Native OData available</text>
+
+  <rect x="250" y="928" width="14" height="14" rx="3" fill="#e85d04"/>
+  <text x="272" y="940" font-size="10" fill="#5a6b7f">RAP wrapper needed to expose as OData</text>
+
+  <rect x="530" y="928" width="14" height="14" rx="3" fill="#dc2626"/>
+  <text x="552" y="940" font-size="10" fill="#5a6b7f">No OData service exists</text>
+
+  <rect x="760" y="928" width="14" height="14" rx="3" fill="#0076d6"/>
+  <text x="782" y="940" font-size="10" fill="#5a6b7f">Alternative: RFC via node-rfc (on-premise)</text>
+
+</svg>
