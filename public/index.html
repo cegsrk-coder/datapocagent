@@ -3,12 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ISU Data Agent</title>
+  <title>ISU Data Agent | Accenture</title>
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-  <link rel="stylesheet" href="/style.css?v=6">
+  <link rel="stylesheet" href="/style.css?v=8">
 </head>
 <body>
   <div class="app">
+
+    <!-- Top Nav Bar -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <span class="acn-logo">&gt;</span>
+        <span class="acn-name">accenture</span>
+        <span class="top-bar-divider"></span>
+        <span class="top-bar-title">ISU Test Data Agent</span>
+      </div>
+      <div class="top-bar-right">
+        <span class="top-bar-badge">S/4HANA ISU</span>
+      </div>
+    </header>
 
     <!-- Welcome Screen -->
     <div id="welcome" class="welcome">
@@ -56,6 +69,10 @@
       <div class="drawer-header">
         <h2>Generated Data</h2>
         <div class="drawer-actions">
+          <button id="exportAllBtn" class="export-all-btn" hidden>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v9M3.5 6.5L7 10l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 11v1.5a.5.5 0 00.5.5h11a.5.5 0 00.5-.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Export All
+          </button>
           <span id="entityCount" class="entity-count"></span>
           <button id="closeDrawer" class="close-btn" title="Close">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -68,6 +85,6 @@
     </div>
 
   </div>
-  <script src="/app.js?v=5"></script>
+  <script src="/app.js?v=7"></script>
 </body>
 </html>
