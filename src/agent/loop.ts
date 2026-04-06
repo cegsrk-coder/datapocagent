@@ -49,7 +49,11 @@ export async function agentLoop(
          const result = await tool.execute(parsedInput);
 
          if (result.success) {
-           entityStore.add(tool.name, result.data);
+           if (Array.isArray(result.data)) {
+             result.data.forEach((d: any) => entityStore.add(tool.name, d));
+           } else {
+             entityStore.add(tool.name, result.data);
+           }
          }
 
          messages.push({

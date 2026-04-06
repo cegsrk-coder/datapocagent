@@ -23,8 +23,6 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const store = new EntityStore();
-
 app.post('/api/generate', async (req, res) => {
   const { scenario } = req.body;
   if (!scenario) {
@@ -32,6 +30,7 @@ app.post('/api/generate', async (req, res) => {
   }
 
   try {
+    const store = new EntityStore();
     const llm = new ChatLLM();
     const tools = [
       createBusinessPartner,

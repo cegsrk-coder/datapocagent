@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'EANL': 'Installation',
     'EGER': 'Device',
     'EABL': 'Meter Reading',
-    'EANL_MOVEIN': 'Move-In',
-    'EANL_MOVEOUT': 'Move-Out',
+    'EVER': 'Supply Contract',
+    'ETTIFN': 'Move-In/Out Document',
     'ERDK': 'Billing Document',
     'VALIDATION': 'Validation Result'
   };

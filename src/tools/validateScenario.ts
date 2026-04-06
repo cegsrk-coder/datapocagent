@@ -5,7 +5,7 @@ export const validateScenario: Tool<any, any> = {
   name: 'validate_scenario',
   description: 'Validates all created entities for referential integrity and business rules. Call this after all entities are created.',
   parameters: z.object({
-    entities: z.array(z.any()).describe("pass the full list of entities created so far")
+    entities: z.array(z.any()).optional().default([]).describe("pass the full list of entities created so far")
   }),
   execute: async (input): Promise<ToolResult<any>> => {
     const entities = input.entities || [];
@@ -26,14 +26,15 @@ export const validateScenario: Tool<any, any> = {
     const installations = byTable['EANL'] || [];
     const devices = byTable['EGER'] || [];
     const readings = byTable['EABL'] || [];
-    const moveIns = byTable['EANL_MOVEIN'] || [];
-    const moveOuts = byTable['EANL_MOVEOUT'] || [];
+    const supplyContracts = byTable['EVER'] || [];
+    const moveDocuments = byTable['ETTIFN'] || [];
     const billings = byTable['ERDK'] || [];
 
     const partnerIds = new Set(partners.map((p: any) => p.PARTNER));
     const contractIds = new Set(contracts.map((c: any) => c.VKONT));
     const installationIds = new Set(installations.map((i: any) => i.ANLAGE));
     const deviceIds = new Set(devices.map((d: any) => d.GERAET));
+    const supplyContractIds = new Set(supplyContracts.map((s: any) => s.VERTRAG));
 
     // Validate contract accounts link to existing partners
     for (const ca of contracts) {
@@ -63,20 +64,20 @@ export const validateScenario: Tool<any, any> = {
       }
     }
 
-    // Validate move-ins link to existing partners and installations
-    for (const mi of moveIns) {
-      if (!partnerIds.has(mi.PARTNER)) {
-        errors.push(`Move-in ${mi.EINESSION} references non-existent partner ${mi.PARTNER}`);
+    // Validate supply contracts link to existing partners and installations
+    for (const sc of supplyContracts) {
+      if (sc.GPART && !partnerIds.has(sc.GPART)) {
+        errors.push(`Supply contract ${sc.VERTRAG} references non-existent partner ${sc.GPART}`);
       }
-      if (!installationIds.has(mi.ANLAGE)) {
-        errors.push(`Move-in ${mi.EINESSION} references non-existent installation ${mi.ANLAGE}`);
+      if (!installationIds.has(sc.ANLAGE)) {
+        errors.push(`Supply contract ${sc.VERTRAG} references non-existent installation ${sc.ANLAGE}`);
       }
     }
 
-    // Validate move-outs link to existing installations
-    for (const mo of moveOuts) {
-      if (!installationIds.has(mo.ANLAGE)) {
-        errors.push(`Move-out ${mo.AESSION} references non-existent installation ${mo.ANLAGE}`);
+    // Validate move-in/out documents link to existing supply contracts
+    for (const doc of moveDocuments) {
+      if (!supplyContractIds.has(doc.VERTRAG)) {
+        errors.push(`Move document ${doc.ETTIFN_ID} references non-existent supply contract ${doc.VERTRAG}`);
       }
     }
 
