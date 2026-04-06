@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISU Data Agent - Architecture</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8f9fc;
+    color: #1a2332;
+    padding: 40px;
+  }
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .header .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .header .logo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #a100ff;
+  }
+  .header .brand-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1a2332;
+  }
+  .header h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1a2332;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 1rem;
+    color: #5a6b7f;
+  }
+
+  /* Architecture Diagram */
+  .diagram {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .layer {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .layer-label {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #fff;
+    padding: 12px 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+  }
+
+  .layer-label.ui { background: #a100ff; }
+  .layer-label.server { background: #0076d6; }
+  .layer-label.agent { background: #e85d04; }
+  .layer-label.tools { background: #16a34a; }
+  .layer-label.infra { background: #6b7280; }
+
+  .layer-content {
+    flex: 1;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    flex: 1;
+    min-width: 200px;
+    background: #fff;
+    border: 1px solid #e2e6ed;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  }
+
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+  }
+
+  .card-icon.purple { background: #f3e8ff; }
+  .card-icon.blue { background: #e8f2fc; }
+  .card-icon.orange { background: #fff3e0; }
+  .card-icon.green { background: #f0fdf4; }
+  .card-icon.gray { background: #f3f4f6; }
+
+  .card h3 {
+    font-size: .9rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1a2332;
+  }
+
+  .card p {
+    font-size: .78rem;
+    color: #5a6b7f;
+    line-height: 1.5;
+  }
+
+  .card .tech {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: .68rem;
+    font-weight: 600;
+    color: #a100ff;
+    background: #f3e8ff;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* Flow arrows */
+  .flow-arrow {
+    text-align: center;
+    color: #c4cdd8;
+    font-size: 1.5rem;
+    margin: -12px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Tools grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    flex: 1;
+  }
+
+  .tool-chip {
+    background: #fff;
+    border: 1px solid #e2e6ed;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: .78rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,.03);
+  }
+
+  .tool-chip .name {
+    font-weight: 600;
+    color: #16a34a;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .tool-chip .table {
+    font-size: .7rem;
+    color: #5a6b7f;
+  }
+
+  /* Data flow section */
+  .flow-section {
+    margin-top: 48px;
+    background: #fff;
+    border: 1px solid #e2e6ed;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  }
+
+  .flow-section h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #1a2332;
+  }
+
+  .flow-steps {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .flow-step {
+    text-align: center;
+    flex: 0 0 auto;
+    width: 140px;
+  }
+
+  .flow-step .circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 10px;
+  }
+
+  .flow-step .circle.purple { background: #f3e8ff; }
+  .flow-step .circle.blue { background: #e8f2fc; }
+  .flow-step .circle.orange { background: #fff3e0; }
+  .flow-step .circle.green { background: #f0fdf4; }
+
+  .flow-step .label {
+    font-size: .78rem;
+    font-weight: 600;
+    color: #1a2332;
+    margin-bottom: 4px;
+  }
+
+  .flow-step .desc {
+    font-size: .7rem;
+    color: #5a6b7f;
+    line-height: 1.4;
+  }
+
+  .flow-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    padding-top: 12px;
+    color: #a100ff;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  /* Tech stack */
+  .tech-stack {
+    margin-top: 48px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tech-tag {
+    background: #fff;
+    border: 1px solid #e2e6ed;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: .8rem;
+    font-weight: 500;
+    color: #1a2332;
+    box-shadow: 0 1px 2px rgba(0,0,0,.03);
+  }
+
+  .tech-tag span {
+    color: #5a6b7f;
+    font-weight: 400;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="brand">
+      <span class="logo">&gt;</span>
+      <span class="brand-name">accenture</span>
+    </div>
+    <h1>S/4HANA ISU Test Data Agent</h1>
+    <p>AI-powered test data generation for SAP ISU scenarios</p>
+  </div>
+
+  <!-- Architecture Layers -->
+  <div class="diagram">
+
+    <!-- UI Layer -->
+    <div class="layer">
+      <div class="layer-label ui">UI</div>
+      <div class="layer-content">
+        <div class="card">
+          <div class="card-icon purple">💬</div>
+          <h3>Chat Interface</h3>
+          <p>Natural language input to describe test data scenarios. Users type prompts like "Create 10 residential customers with billing".</p>
+          <span class="tech">HTML / CSS / JS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon purple">📊</div>
+          <h3>Data Viewer</h3>
+          <p>Full-page overlay showing generated entities grouped by SAP table. Supports horizontal/vertical scrolling and Excel export.</p>
+          <span class="tech">SheetJS (XLSX)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">&#8595;</div>
+
+    <!-- Server Layer -->
+    <div class="layer">
+      <div class="layer-label server">API</div>
+      <div class="layer-content">
+        <div class="card">
+          <div class="card-icon blue">🌐</div>
+          <h3>Express Server</h3>
+          <p>Single API endpoint <code>POST /api/generate</code> receives scenario text, orchestrates the agent loop, and returns entities + messages.</p>
+          <span class="tech">Express 5 / TypeScript</span>
+        </div>
+        <div class="card">
+          <div class="card-icon blue">📦</div>
+          <h3>Entity Store</h3>
+          <p>In-memory store tracking all created entities per request. Provides ID lookup for referential integrity across tools.</p>
+          <span class="tech">Per-request isolation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">&#8595;</div>
+
+    <!-- Agent Layer -->
+    <div class="layer">
+      <div class="layer-label agent">AGENT</div>
+      <div class="layer-content">
+        <div class="card">
+          <div class="card-icon orange">🤖</div>
+          <h3>Agent Loop</h3>
+          <p>Multi-turn orchestration loop (max 20 turns). Calls LLM, receives tool calls, executes them, feeds results back. Continues until LLM signals completion.</p>
+          <span class="tech">Agent Pattern</span>
+        </div>
+        <div class="card">
+          <div class="card-icon orange">🧠</div>
+          <h3>Azure OpenAI (GPT-4.1)</h3>
+          <p>LLM with function calling. Decides which tools to invoke, generates realistic field values, and maintains entity dependency order.</p>
+          <span class="tech">OpenAI SDK / Azure</span>
+        </div>
+        <div class="card">
+          <div class="card-icon orange">📋</div>
+          <h3>System Prompt</h3>
+          <p>Dynamic context builder. Injects scenario description, entity dependency rules, created entities summary, and tool call rules.</p>
+          <span class="tech">Dynamic Context</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">&#8595;</div>
+
+    <!-- Tools Layer -->
+    <div class="layer">
+      <div class="layer-label tools">TOOLS</div>
+      <div class="layer-content">
+        <div class="tools-grid">
+          <div class="tool-chip">
+            <span class="name">create_business_partner</span>
+            <span class="table">SAP Table: BUT000</span>
+          </div>
+          <div class="tool-chip">
+            <span class="name">create_contract_account</span>
+            <span class="table">SAP Table: FKKVKP</span>
+          </div>
+          <div class="tool-chip">
+            <span class="name">create_installation</span>
+            <span class="table">SAP Table: EANL</span>
+          </div>
+          <div class="tool-chip">
+            <span class="name">create_device</span>
+            <span class="table">SAP Table: EGER</span>
+          </div>
+          <div class="tool-chip">
+            <span class="name">create_meter_reading</span>
+            <span class="table">SAP Table: EABL</span>
+          </div>
+          <div class="tool-chip">
+            <span class="name">move_in</span>
+            <span class="table">SAP Tables: EVER, ETTIFN</span>
+          </div>
+          <div class="tool-chip">
+            <span class="name">move_out</span>
+            <span class="table">SAP Table: ETTIFN</span>
+          </div>
+          <div class="tool-chip">
+            <span class="name">create_billing_document</span>
+            <span class="table">SAP Table: ERDK</span>
+          </div>
+          <div class="tool-chip">
+            <span class="name">validate_scenario</span>
+            <span class="table">Referential Integrity Check</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">&#8595;</div>
+
+    <!-- Infrastructure Layer -->
+    <div class="layer">
+      <div class="layer-label infra">INFRA</div>
+      <div class="layer-content">
+        <div class="card">
+          <div class="card-icon gray">☁️</div>
+          <h3>Azure App Service</h3>
+          <p>Node.js 20 LTS runtime hosting the Express server. Auto-scales and serves the static frontend.</p>
+          <span class="tech">Azure Cloud</span>
+        </div>
+        <div class="card">
+          <div class="card-icon gray">🔑</div>
+          <h3>Azure OpenAI Service</h3>
+          <p>GPT-4.1 deployment providing function-calling LLM capabilities. Secured with API key in app settings.</p>
+          <span class="tech">Azure AI</span>
+        </div>
+        <div class="card">
+          <div class="card-icon gray">📁</div>
+          <h3>GitHub Repository</h3>
+          <p>Source code hosted on GitHub with CI/CD deployment to Azure App Service.</p>
+          <span class="tech">Git / GitHub</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Data Flow -->
+  <div class="flow-section">
+    <h2>Data Generation Flow</h2>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="circle purple">👤</div>
+        <div class="label">User Prompt</div>
+        <div class="desc">"Create 5 residential customers with billing"</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle blue">🌐</div>
+        <div class="label">API Server</div>
+        <div class="desc">POST /api/generate with scenario</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle orange">🧠</div>
+        <div class="label">GPT-4.1</div>
+        <div class="desc">Decides tool order &amp; generates values</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle green">🔧</div>
+        <div class="label">Tool Execution</div>
+        <div class="desc">BP → CA → Install → Device → Reading</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle purple">📊</div>
+        <div class="label">Data Output</div>
+        <div class="desc">SAP tables with referential integrity</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle blue">📥</div>
+        <div class="label">Export</div>
+        <div class="desc">View in UI or export to Excel (.xlsx)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Entity Dependency -->
+  <div class="flow-section">
+    <h2>Entity Dependency Chain</h2>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="circle purple">👤</div>
+        <div class="label">Business Partner</div>
+        <div class="desc">BUT000</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle blue">📝</div>
+        <div class="label">Contract Account</div>
+        <div class="desc">FKKVKP</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle orange">🏠</div>
+        <div class="label">Installation</div>
+        <div class="desc">EANL</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle green">📡</div>
+        <div class="label">Device</div>
+        <div class="desc">EGER</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle purple">📏</div>
+        <div class="label">Meter Reading</div>
+        <div class="desc">EABL</div>
+      </div>
+      <div class="flow-connector">→</div>
+      <div class="flow-step">
+        <div class="circle blue">💰</div>
+        <div class="label">Billing</div>
+        <div class="desc">ERDK</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tech Stack -->
+  <div class="tech-stack">
+    <div class="tech-tag">TypeScript <span>/ Language</span></div>
+    <div class="tech-tag">Express 5 <span>/ Server</span></div>
+    <div class="tech-tag">Azure OpenAI <span>/ LLM</span></div>
+    <div class="tech-tag">GPT-4.1 <span>/ Model</span></div>
+    <div class="tech-tag">Zod <span>/ Validation</span></div>
+    <div class="tech-tag">SheetJS <span>/ Export</span></div>
+    <div class="tech-tag">Azure App Service <span>/ Hosting</span></div>
+    <div class="tech-tag">Node.js 20 <span>/ Runtime</span></div>
+  </div>
+
+</div>
+</body>
+</html>
