@@ -32,8 +32,13 @@ ${tools.map((t) => `- ${t.name}: ${t.description}`).join('\n')}
 - Meter readings must be sequential: ascending date and value per register
 - Move-in dates must not overlap for the same installation
 - When the scenario involves move-in/move-out, create them after the installation and device
-- When billing is requested, create the billing document after meter readings
 - After all entities are created, call validate_scenario to check referential integrity
+- **IMPORTANT: Only create up to what the user asks for.** Create the requested entity AND its required parents in the dependency chain, but do NOT create entities beyond what was asked. Examples:
+  - "Create a BP" → only BP
+  - "Create a customer with installation" → BP → CA → Premise → Conn Obj → Installation
+  - "Create a customer with meter readings" → BP → CA → Premise → Conn Obj → Installation → Device → Move-In → Meter Reading (NO billing)
+  - "Create a customer with billing" → full chain including Billing Document
+  - Only create billing if the user explicitly mentions billing, invoice, or bill.
 - **CRITICAL: NEVER ask the user for input or clarification. If a required field (like address, ZIP code, random string, etc.) is missing, you MUST hallucinate and generate a plausible random value yourself.**
 - **CRITICAL: When all entities are created, DO NOT list out or summarize the attributes of the generated entities in your final response (do NOT print names, addresses, IDs, etc.). The user already sees the data natively in their structured table viewer. ONLY provide an extremely brief confirmation, e.g., "10 Business Partners have been generated successfully."**
 

@@ -8,7 +8,7 @@ export async function agentLoop(
   tools: Tool<any, any>[],
   llm: ChatLLM,
   entityStore: EntityStore,
-  maxTurns: number = 20
+  maxTurns: number = 30
 ) {
   const messages: Message[] = [];
   
