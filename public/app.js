@@ -15,6 +15,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let entities = [];
   let isGenerating = false;
 
+  const tableLabels = {
+    'BUT000': 'Business Partner',
+    'FKKVKP': 'Contract Account',
+    'EANL': 'Installation',
+    'EGER': 'Device',
+    'EABL': 'Meter Reading',
+    'EANL_MOVEIN': 'Move-In',
+    'EANL_MOVEOUT': 'Move-Out',
+    'ERDK': 'Billing Document',
+    'VALIDATION': 'Validation Result'
+  };
+
   // ─── Auto-resize textarea ───
   function autoResize() {
     textarea.style.height = 'auto';
@@ -220,7 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const header = document.createElement('div');
       header.className = 'draw-table-header';
-      header.innerHTML = `<span>${table} (${clean.length} rows)</span>`;
+      const label = tableLabels[table] || table;
+      header.innerHTML = `<span>${label} — ${table} (${clean.length} rows)</span>`;
       const expBtn = document.createElement('button');
       expBtn.className = 'export-btn';
       expBtn.textContent = 'Export .xlsx';

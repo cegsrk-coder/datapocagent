@@ -9,6 +9,11 @@ import { createBusinessPartner } from './tools/createBusinessPartner';
 import { createContractAccount } from './tools/createContractAccount';
 import { createInstallation } from './tools/createInstallation';
 import { createDevice } from './tools/createDevice';
+import { createMeterReading } from './tools/createMeterReading';
+import { moveIn } from './tools/moveIn';
+import { moveOut } from './tools/moveOut';
+import { createBillingDocument } from './tools/createBillingDocument';
+import { validateScenario } from './tools/validateScenario';
 
 config();
 
@@ -32,7 +37,12 @@ app.post('/api/generate', async (req, res) => {
       createBusinessPartner,
       createContractAccount,
       createInstallation,
-      createDevice
+      createDevice,
+      createMeterReading,
+      moveIn,
+      moveOut,
+      createBillingDocument,
+      validateScenario
     ];
 
     const result = await agentLoop(scenario, tools, llm, store);
